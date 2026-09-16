@@ -1,0 +1,2 @@
+'use strict';
+if(document.modelContext?.registerTool){try{Promise.resolve(document.modelContext.registerTool({name:'read_budget_summary',description:'Read the current recorded budget totals in cents. Does not change data.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true,untrustedContentHint:false},execute(input){if(!input||Object.keys(input).length)throw new Error('No arguments expected.');return {totalCents:total(),availableCents:available(),savedCents:state.saved,unpaidCents:owed()};}})).catch(()=>{});}catch{}}
