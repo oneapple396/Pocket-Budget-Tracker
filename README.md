@@ -1,5 +1,7 @@
 # Pocket
 
+Live website: https://pocket-money-student-tracker.oneapple396.chatgpt.site/
+
 A student budget tracker made with HTML, CSS, and JavaScript only. No libraries, frameworks, accounts, or installation are required.
 
 Quick entry: tap Log spending, enter an amount, and save. The note is optional and the date defaults to today; expand “Today · change date” for older purchases. Undo reverses the latest saved form action until another action or a reload.
@@ -12,5 +14,8 @@ Upcoming holds back all listed unpaid costs from available money. Marking a cost
 
 Amounts are in US dollars. Data is saved in this browser, on this device; clearing browser storage removes it. Opening the app at a different address or in another browser uses separate storage. This app does not connect to bank accounts or make payments.
 
-Files: `dist/index.html` (page), `dist/style.css` (styles), `dist/app.js` (logic), and `dist/agent-tools.js` (optional browser agent readback).
+Files: `dist/index.html` (page), `dist/style.css` (styles), `dist/app.js` (budget logic), `dist/tutorial.js` (interactive tutorial), `dist/security.js` (saved-data validation), and `dist/privacy.js` (storage controls). Browser agent access is disabled.
+
+Privacy: budget information stays in browser storage and is not encrypted. Use the Privacy controls to disable saving or clear your budget. No bank connection or account sign-in is required.
+
 
