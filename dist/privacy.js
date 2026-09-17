@@ -6,3 +6,18 @@ $('#privacy-apply').onclick=()=>runBudgetAction(()=>{const save=$('#privacy-save
 $('#privacy-delete').onclick=()=>runBudgetAction(()=>{if(!confirm('Permanently delete this budget from this browser and start again? This cannot be undone. Other budgets will not be deleted.'))return;try{localStorage.removeItem(key);lastUndo=null;pendingSnapshot=null;location.reload();}catch{notify('The saved budget could not be deleted.');}});
 window.addEventListener('beforeunload',e=>{if(memoryOnly&&state.ready){e.preventDefault();e.returnValue='';}});
 updatePrivacyLabel();
+
+$('#reset-everything').onclick=()=>{
+  if(!confirm('Reset EVERYTHING in Pocket on this browser? This permanently deletes ALL saved Pocket budgets, spending history, goals, upcoming costs, setup answers, and privacy preferences. This cannot be undone.'))return;
+  try{
+    const keys=[];
+    for(let i=0;i<localStorage.length;i++){const name=localStorage.key(i);if(name==='pocket-budget-v1'||name.startsWith('pocket-budget-v1-')||name==='pocket-marcus-test-v1'||name==='pocket-marcus-test-v1-no-save')keys.push(name);}
+    keys.forEach(name=>localStorage.removeItem(name));
+    localStorage.setItem('pocket-reset-all',String(Date.now()));localStorage.removeItem('pocket-reset-all');
+    lastUndo=null;pendingSnapshot=null;state.ready=false;memoryOnly=false;
+    location.replace(location.pathname);
+  }catch{notify('Pocket could not clear browser storage. Please try again.');}
+};
+
+window.addEventListener('storage',e=>{if(e.key==='pocket-reset-all'&&e.newValue){lastUndo=null;pendingSnapshot=null;state.ready=false;memoryOnly=false;location.replace(location.pathname);}});
+
