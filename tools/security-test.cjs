@@ -1,0 +1,16 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),crypto=require('node:crypto'),path=require('node:path');
+const dir=path.join(__dirname,'../dist'),ctx={};vm.createContext(ctx);vm.runInContext(fs.readFileSync(path.join(dir,'security.js'),'utf8'),ctx);
+const good={opening:100,saved:0,target:0,payAmount:0,transactions:[],costs:[],goals:[]};
+assert.equal(ctx.parseBudget(JSON.stringify(good)).opening,100);
+assert.throws(()=>ctx.parseBudget(' '.repeat(4000001)));
+assert.throws(()=>ctx.parseBudget('{'));
+const goal={id:'one',name:'Travel',target:100,saved:0};
+assert.throws(()=>ctx.validateBudget({...good,goals:[goal,goal]}));
+assert.throws(()=>ctx.validateBudget({...good,goals:[{...goal,id:'" onclick="alert(1)'}]}));
+assert.throws(()=>ctx.validateBudget({...good,opening:Infinity}));
+const html=fs.readFileSync(path.join(dir,'index.html'),'utf8');
+for(const match of html.matchAll(/(?:src|href)="([^"]+)" integrity="([^"]+)"/g))assert.equal(match[2],'sha384-'+crypto.createHash('sha384').update(fs.readFileSync(path.join(dir,match[1]))).digest('base64'));
+assert.equal([...html.matchAll(/<script /g)].length,4);
+assert.equal([...html.matchAll(/<script src="[^"]+" integrity=/g)].length,4);
+assert(html.includes("script-src-attr 'none'"));assert(html.includes("connect-src 'none'"));assert(!html.includes("script-src 'self'"));
+console.log('PASS: bounded parsing, duplicate/hostile records rejected, exact asset integrity, restrictive script policy.');

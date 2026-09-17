@@ -19,3 +19,6 @@ Files: `dist/index.html` (page), `dist/style.css` (styles), `dist/app.js` (budge
 Privacy: budget information stays in browser storage and is not encrypted. Use the Privacy controls to disable saving or clear your budget. No bank connection or account sign-in is required.
 
 
+
+Security maintenance: after editing browser JavaScript or CSS, run node tools/update-integrity.cjs from this folder, then node tools/security-test.cjs before publishing. Script hashes in the content policy allow only the exact shipped scripts. Integrity checks also cover the stylesheet. These controls do not encrypt browser data or protect against a compromised device or replacement of the entire website.
+
